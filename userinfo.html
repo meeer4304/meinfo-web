@@ -1,142 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Info</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #0e0e0e;
-            color: #fff;
+            background-color: #f3f4f6;
             text-align: center;
-            margin-top: 50px;
-            animation: backgroundAnimation 5s infinite alternate;
+            padding: 30px;
         }
-
-        @keyframes backgroundAnimation {
-            0% {
-                background: #0e0e0e;
-            }
-            50% {
-                background: #333;
-            }
-            100% {
-                background: #0e0e0e;
-            }
+        h1 {
+            color: #1dbf73;
         }
-
-        img {
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            border: 5px solid #00ae86;
-            animation: glow 1.5s infinite alternate;
-        }
-
-        @keyframes glow {
-            0% {
-                box-shadow: 0 0 10px #00ae86;
-            }
-            100% {
-                box-shadow: 0 0 20px #00ae86;
-            }
-        }
-
-        .card {
-            background: #1e1e1e;
+        .user-info {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            margin: auto;
             width: 300px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            animation: slideIn 1s ease-out;
+            margin: 0 auto;
         }
-
-        @keyframes slideIn {
-            0% {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .avatar {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
         }
-
-        h2 {
-            font-size: 24px;
-            color: #00ae86;
-            animation: textGlow 2s infinite alternate;
-        }
-
-        @keyframes textGlow {
-            0% {
-                text-shadow: 0 0 10px #00ae86, 0 0 20px #00ae86;
-            }
-            100% {
-                text-shadow: 0 0 20px #00ae86, 0 0 30px #00ae86;
-            }
-        }
-
-        p {
-            font-size: 16px;
-        }
-
-        #roles, #badges {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #bbb;
-        }
-
-        #roles span, #badges span {
-            display: inline-block;
-            padding: 5px 10px;
+        .badges img {
+            width: 30px;
+            height: 30px;
             margin: 5px;
-            background-color: #333;
-            border-radius: 5px;
+        }
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <img id="avatar" src="" alt="Avatar"><br><br>
-        <h2 id="username"></h2>
-        <p>ID: <span id="userid"></span></p>
-        <div id="roles"></div>
-        <div id="badges"></div>
+
+    <h1>User Information</h1>
+    <div class="user-info">
+        <img id="avatar" class="avatar" src="" alt="User Avatar">
+        <h2 id="username">Username</h2>
+        <p id="userid">User ID: </p>
+        <p id="roles">Roles: </p>
+        <div class="badge-container" id="badges">
+            <!-- Badges will be inserted here -->
+        </div>
     </div>
 
     <script>
-        // Get params from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('userid');
-        const username = urlParams.get('username');
-        const avatar = urlParams.get('avatar');
-        const roles = urlParams.get('roles').split(',');
-        const badges = urlParams.get('badges').split(',');
+        // Get query parameters
+        const params = new URLSearchParams(window.location.search);
 
-        // Set content
-        document.getElementById('username').textContent = username;
-        document.getElementById('userid').textContent = userId;
+        const userId = params.get('userid');
+        const username = params.get('username');
+        const avatar = params.get('avatar');
+        const roles = params.get('roles');
+        const badges = params.get('badges').split(',');
+
+        // Set the user info
         document.getElementById('avatar').src = avatar;
+        document.getElementById('username').textContent = username;
+        document.getElementById('userid').textContent = `User ID: ${userId}`;
+        document.getElementById('roles').textContent = `Roles: ${roles || 'No roles'}`;
 
-        // Display roles
-        const rolesDiv = document.getElementById('roles');
-        rolesDiv.innerHTML = `<strong>Roles:</strong><br>`;
-        roles.forEach(role => {
-            rolesDiv.innerHTML += `<span>${role}</span>`;
-        });
+        // Badge icons mapping
+        const badgeIcons = {
+            "DISCORD_NITRO": "https://cdn.discordapp.com/attachments/711569055594258472/871172055530215936/nitro.png",
+            "EARLY_SUPPORTER": "https://cdn.discordapp.com/attachments/711569055594258472/871172055530215936/early_supporter.png",
+            "BUG_HUNTER_LEVEL_1": "https://cdn.discordapp.com/attachments/711569055594258472/871172055530215936/bug_hunter_level_1.png",
+            "BUG_HUNTER_LEVEL_2": "https://cdn.discordapp.com/attachments/711569055594258472/871172055530215936/bug_hunter_level_2.png",
+            "DISCORD_PARTNER": "https://cdn.discordapp.com/attachments/711569055594258472/871172055530215936/partner.png",
+            "HYPESQUAD_EVENTS": "https://cdn.discordapp.com/attachments/711569055594258472/871172055530215936/hypesquad_events.png",
+            "VERIFIED_BOT_DEVELOPER": "https://cdn.discordapp.com/attachments/711569055594258472/871172055530215936/verified_bot_developer.png"
+        };
 
-        // Display badges
-        const badgesDiv = document.getElementById('badges');
-        badgesDiv.innerHTML = `<strong>Badges:</strong><br>`;
+        // Display badges if available
+        const badgesContainer = document.getElementById('badges');
         badges.forEach(badge => {
-            badgesDiv.innerHTML += `<span>${badge}</span>`;
+            if (badgeIcons[badge]) {
+                const badgeImage = document.createElement('img');
+                badgeImage.src = badgeIcons[badge];
+                badgeImage.alt = badge;
+                badgesContainer.appendChild(badgeImage);
+            }
         });
-
-        // Debug: If the avatar URL is missing, log an error
-        if (!avatar) {
-            console.error("Avatar URL is missing or broken!");
-        }
     </script>
+
 </body>
 </html>
