@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0e0e0e;
+            color: #fff;
+            text-align: center;
+            margin-top: 50px;
+        }
+        img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            border: 5px solid #00ae86;
+        }
+        .card {
+            background: #1e1e1e;
+            padding: 20px;
+            margin: auto;
+            width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img id="avatar" src="" alt="Avatar"><br><br>
+        <h2 id="username"></h2>
+        <p>ID: <span id="userid"></span></p>
+    </div>
+
+    <script>
+        // Get params from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userid');
+        const username = urlParams.get('username');
+        const avatar = urlParams.get('avatar');
+
+        // Set content
+        document.getElementById('username').textContent = username;
+        document.getElementById('userid').textContent = userId;
+        document.getElementById('avatar').src = avatar;
+    </script>
+</body>
+</html>
