@@ -81,12 +81,18 @@
             font-size: 16px;
         }
 
-        #avatarUrl {
-            font-size: 12px;
+        #roles, #badges {
+            margin-top: 20px;
+            font-size: 14px;
             color: #bbb;
-            word-wrap: break-word;
-            max-width: 300px;
-            margin-top: 10px;
+        }
+
+        #roles span, #badges span {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 5px;
+            background-color: #333;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -95,7 +101,8 @@
         <img id="avatar" src="" alt="Avatar"><br><br>
         <h2 id="username"></h2>
         <p>ID: <span id="userid"></span></p>
-        <p>Avatar URL: <span id="avatarUrl"></span></p> <!-- For debugging -->
+        <div id="roles"></div>
+        <div id="badges"></div>
     </div>
 
     <script>
@@ -104,14 +111,29 @@
         const userId = urlParams.get('userid');
         const username = urlParams.get('username');
         const avatar = urlParams.get('avatar');
+        const roles = urlParams.get('roles').split(',');
+        const badges = urlParams.get('badges').split(',');
 
         // Set content
         document.getElementById('username').textContent = username;
         document.getElementById('userid').textContent = userId;
         document.getElementById('avatar').src = avatar;
-        document.getElementById('avatarUrl').textContent = avatar;  // Show the avatar URL for debugging
 
-        // Debug: If the avatar URL is empty, log an error
+        // Display roles
+        const rolesDiv = document.getElementById('roles');
+        rolesDiv.innerHTML = `<strong>Roles:</strong><br>`;
+        roles.forEach(role => {
+            rolesDiv.innerHTML += `<span>${role}</span>`;
+        });
+
+        // Display badges
+        const badgesDiv = document.getElementById('badges');
+        badgesDiv.innerHTML = `<strong>Badges:</strong><br>`;
+        badges.forEach(badge => {
+            badgesDiv.innerHTML += `<span>${badge}</span>`;
+        });
+
+        // Debug: If the avatar URL is missing, log an error
         if (!avatar) {
             console.error("Avatar URL is missing or broken!");
         }
