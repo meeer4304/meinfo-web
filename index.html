@@ -1,126 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Info</title>
   <style>
     body {
-      background: #0d0d0d;
+      background-color: #121212;
       color: white;
       font-family: Arial, sans-serif;
       text-align: center;
-      margin: 0;
-      padding: 20px;
     }
-    .card {
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 15px;
-      display: inline-block;
-      margin-top: 30px;
-      box-shadow: 0 0 20px #00ffff80;
-      animation: glow 2s infinite alternate;
+    .badge {
+      margin: 5px;
     }
-    @keyframes glow {
-      from {
-        box-shadow: 0 0 10px #00ffff40;
-      }
-      to {
-        box-shadow: 0 0 20px #00ffff80;
-      }
-    }
-    .avatar {
-      border-radius: 50%;
-      width: 120px;
-      height: 120px;
-      margin-bottom: 10px;
-    }
-    .badges img {
+    .badge img {
       width: 40px;
       height: 40px;
-      margin: 5px;
-      border-radius: 8px;
-      transition: transform 0.3s, box-shadow 0.3s;
-      cursor: pointer;
     }
-    .badges img:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 15px #00ffff;
+    .glow {
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
     }
-    .roles span {
-      background: #292929;
-      padding: 5px 10px;
-      border-radius: 12px;
-      margin: 5px;
-      display: inline-block;
+    h1, h2 {
+      font-size: 2rem;
+    }
+    .roles {
+      margin-top: 20px;
+      text-align: left;
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
-  <h1 id="title">User Info</h1>
-  <div class="card">
-    <img id="avatar" class="avatar" src="" alt="Avatar"/>
-    <h2 id="username">Username</h2>
-    <p><strong>User ID:</strong> <span id="userid"></span></p>
+  <h1 class="glow">User Information</h1>
+  <img id="avatar" src="" alt="User Avatar" style="border-radius: 50%; width: 150px;">
+  <h2 id="username"></h2>
+  <p id="userid"></p>
 
-    <h3>Roles</h3>
-    <div class="roles" id="rolesList"></div>
+  <div class="roles" id="roles"></div>
 
-    <h3>Badges</h3>
-    <div class="badges" id="badgesList"></div>
+  <div class="badges">
+    <p id="badges"></p>
   </div>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('username');
-    const userid = urlParams.get('userid');
-    const avatar = urlParams.get('avatar');
-    const roles = urlParams.get('roles') ? urlParams.get('roles').split(',') : [];
-    const badges = urlParams.get('badges') ? urlParams.get('badges').split(',') : [];
+    document.getElementById('username').textContent = "Username: " + urlParams.get('username');
+    document.getElementById('userid').textContent = "User ID: " + urlParams.get('userid');
+    document.getElementById('avatar').src = urlParams.get('avatar');
 
-    // Set user info
-    document.getElementById('username').textContent = username;
-    document.getElementById('userid').textContent = userid;
-    document.getElementById('avatar').src = avatar;
-    document.getElementById('title').textContent = `${username}'s Info`;
+    // Display roles
+    const roles = urlParams.get('roles').split(',');
+    const rolesDiv = document.getElementById('roles');
+    rolesDiv.innerHTML = 'Roles: ' + (roles.length > 0 ? roles.join(', ') : 'None');
 
-    // Show roles
-    const rolesList = document.getElementById('rolesList');
-    roles.forEach(role => {
-      const span = document.createElement('span');
-      span.textContent = role;
-      rolesList.appendChild(span);
-    });
-
-    // Badge icons
-    const badgeIcons = {
-      "DISCORD_EMPLOYEE": "https://i.postimg.cc/qBXDT3xX/icons8-discord-employee-48.png",
-      "PARTNERED_SERVER_OWNER": "https://i.postimg.cc/7hVKMFZQ/icons8-discord-partner-server-owner-badge-48.png",
-      "HYPESQUAD_EVENTS": "https://i.postimg.cc/2SXXtNFs/icons8-discord-hypesquad-events-badge-48.png",
-      "BUG_HUNTER_LEVEL_1": "https://i.postimg.cc/tRhw4fp6/icons8-discord-bug-hunter-badge-48.png",
-      "HOUSE_BRAVERY": "https://i.postimg.cc/wvDf3y8z/icons8-discord-hypesquad-bravery-house-badge-48.png",
-      "HOUSE_BRILLIANCE": "https://i.postimg.cc/yNMpVhGn/icons8-dsicord-hypesquad-brilliance-house-badge-48.png",
-      "HOUSE_BALANCE": "https://i.postimg.cc/wByb84w7/icons8-discord-hypesquad-balance-house-badge-48.png",
-      "EARLY_SUPPORTER": "https://i.postimg.cc/yxXbpJvj/icons8-discord-early-supporter-badge-48.png",
-      "BUG_HUNTER_LEVEL_2": "https://i.postimg.cc/YCSs8CgN/icons8-discord-golden-bug-hunter-badge-48.png",
-      "VERIFIED_BOT": "https://i.postimg.cc/65tS20pm/icons8-discord-bot-48.png",
-      "EARLY_VERIFIED_BOT_DEVELOPER": "https://i.postimg.cc/X7LPwCZ7/icons8-discord-early-verified-bot-developer-badge-48.png",
-      "ACTIVE_DEVELOPER": "https://i.postimg.cc/tT6fPv6L/icons8-discord-active-developer-badge-48.png",
-      "NITRO": "https://i.postimg.cc/FzmPSrNL/icons8-discord-nitro-badge-48.png"
-    };
-
-    // Show badges
-    const badgesList = document.getElementById('badgesList');
-    badges.forEach(badge => {
-      if (badgeIcons[badge]) {
-        const img = document.createElement('img');
-        img.src = badgeIcons[badge];
-        img.alt = badge;
-        img.title = badge.replaceAll('_', ' '); // Tooltip
-        badgesList.appendChild(img);
-      }
-    });
+    // Display badges (with images)
+    const badges = urlParams.get('badges');
+    const badgesDiv = document.getElementById('badges');
+    
+    if (badges && badges !== 'None') {
+      badgesDiv.innerHTML = badges; // Already passed as image links
+    } else {
+      badgesDiv.innerHTML = 'No badges';
+    }
   </script>
 </body>
 </html>
