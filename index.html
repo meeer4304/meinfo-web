@@ -1,72 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Info</title>
-  <style>
-    body {
-      background-color: #121212;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-    .badge {
-      margin: 5px;
-    }
-    .badge img {
-      width: 40px;
-      height: 40px;
-    }
-    .glow {
-      text-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
-    }
-    h1, h2 {
-      font-size: 2rem;
-    }
-    .roles {
-      margin-top: 20px;
-      text-align: left;
-      font-size: 1.1rem;
-    }
-    .badge-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Info</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #2f3136;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #36393f;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        img.avatar {
+            border-radius: 50%;
+            width: 128px;
+            height: 128px;
+        }
+
+        .badge {
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .role {
+            background-color: #2a2d36;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        h1 {
+            color: #7289da;
+        }
+
+        .glow-text {
+            color: #7289da;
+            text-shadow: 0 0 10px #7289da, 0 0 20px #7289da;
+        }
+    </style>
 </head>
 <body>
-  <h1 class="glow">User Information</h1>
-  <img id="avatar" src="" alt="User Avatar" style="border-radius: 50%; width: 150px;">
-  <h2 id="username"></h2>
-  <p id="userid"></p>
+    <div class="container">
+        <h1 class="glow-text" id="username">Meeer's Info</h1>
+        <img id="avatar" class="avatar" src="" alt="User Avatar">
+        <p id="userid">User ID: </p>
+        <div id="roles"></div>
+        <div id="badges" class="badge-container"></div>
+        <a id="profile-link" href="" target="_blank">Click here to view full profile</a>
+    </div>
 
-  <div class="roles" id="roles"></div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+        const userid = urlParams.get('userid');
+        const avatar = urlParams.get('avatar');
+        const roles = urlParams.get('roles');
+        const badges = urlParams.get('badges');
 
-  <div class="badge-container" id="badges"></div>
-
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    document.getElementById('username').textContent = "Username: " + urlParams.get('username');
-    document.getElementById('userid').textContent = "User ID: " + urlParams.get('userid');
-    document.getElementById('avatar').src = urlParams.get('avatar');
-
-    // Display roles
-    const roles = urlParams.get('roles').split(',');
-    const rolesDiv = document.getElementById('roles');
-    rolesDiv.innerHTML = 'Roles: ' + (roles.length > 0 ? roles.join(', ') : 'None');
-
-    // Display badges (with images)
-    const badges = urlParams.get('badges');
-    const badgesDiv = document.getElementById('badges');
-    
-    if (badges && badges !== 'None') {
-      badgesDiv.innerHTML = badges; // Already passed as image links
-    } else {
-      badgesDiv.innerHTML = 'No badges';
-    }
-  </script>
+        document.getElementById('username').textContent = username + "'s Info";
+        document.getElementById('avatar').src = avatar;
+        document.getElementById('userid').textContent = "User ID: " + userid;
+        document.getElementById('roles').innerHTML = roles.split(',').map(role => `<span class="role">${role}</span>`).join('');
+        document.getElementById('badges').innerHTML = badges.split(' ').map(badge => `<img class="badge" src="${badge}" alt="Badge">`).join('');
+        document.getElementById('profile-link').href = `https://discord.com/users/${userid}`;
+    </script>
 </body>
 </html>
