@@ -37,9 +37,16 @@
       margin-bottom: 10px;
     }
     .badges img {
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       margin: 5px;
+      border-radius: 8px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .badges img:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 15px #00ffff;
     }
     .roles span {
       background: #292929;
@@ -72,13 +79,13 @@
     const roles = urlParams.get('roles') ? urlParams.get('roles').split(',') : [];
     const badges = urlParams.get('badges') ? urlParams.get('badges').split(',') : [];
 
-    // Set basic user info
+    // Set user info
     document.getElementById('username').textContent = username;
     document.getElementById('userid').textContent = userid;
     document.getElementById('avatar').src = avatar;
     document.getElementById('title').textContent = `${username}'s Info`;
 
-    // Display roles
+    // Show roles
     const rolesList = document.getElementById('rolesList');
     roles.forEach(role => {
       const span = document.createElement('span');
@@ -86,7 +93,7 @@
       rolesList.appendChild(span);
     });
 
-    // Badge Icons (replace these links with your Postimages links)
+    // Badge icons
     const badgeIcons = {
       "DISCORD_EMPLOYEE": "https://i.postimg.cc/qBXDT3xX/icons8-discord-employee-48.png",
       "PARTNERED_SERVER_OWNER": "https://i.postimg.cc/7hVKMFZQ/icons8-discord-partner-server-owner-badge-48.png",
@@ -103,13 +110,16 @@
       "NITRO": "https://i.postimg.cc/FzmPSrNL/icons8-discord-nitro-badge-48.png"
     };
 
-    // Display badges
+    // Show badges
     const badgesList = document.getElementById('badgesList');
     badges.forEach(badge => {
-      const img = document.createElement('img');
-      img.src = badgeIcons[badge] || '';
-      img.alt = badge;
-      if (img.src) badgesList.appendChild(img);
+      if (badgeIcons[badge]) {
+        const img = document.createElement('img');
+        img.src = badgeIcons[badge];
+        img.alt = badge;
+        img.title = badge.replaceAll('_', ' '); // Tooltip
+        badgesList.appendChild(img);
+      }
     });
   </script>
 </body>
