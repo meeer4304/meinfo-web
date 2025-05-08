@@ -31,6 +31,7 @@
         <img id="avatar" src="" alt="Avatar"><br><br>
         <h2 id="username"></h2>
         <p>ID: <span id="userid"></span></p>
+        <p>Avatar URL: <span id="avatarUrl"></span></p> <!-- For debugging -->
     </div>
 
     <script>
@@ -44,6 +45,12 @@
         document.getElementById('username').textContent = username;
         document.getElementById('userid').textContent = userId;
         document.getElementById('avatar').src = avatar;
+        document.getElementById('avatarUrl').textContent = avatar;  // Show the avatar URL for debugging
+
+        // Debug: If the avatar URL is empty, log an error
+        if (!avatar) {
+            console.error("Avatar URL is missing or broken!");
+        }
     </script>
 </body>
 </html>
