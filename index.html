@@ -29,6 +29,12 @@
       text-align: left;
       font-size: 1.1rem;
     }
+    .badge-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -39,9 +45,7 @@
 
   <div class="roles" id="roles"></div>
 
-  <div class="badges">
-    <p id="badges"></p>
-  </div>
+  <div class="badge-container" id="badges"></div>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
