@@ -38,6 +38,18 @@
             justify-content: center;
             margin-top: 10px;
         }
+        .roles {
+            font-size: 14px;
+            color: #333;
+            margin-top: 10px;
+        }
+        .role {
+            background-color: #1dbf73;
+            color: #fff;
+            padding: 3px 8px;
+            margin: 3px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -47,7 +59,11 @@
         <img id="avatar" class="avatar" src="" alt="User Avatar">
         <h2 id="username">Username</h2>
         <p id="userid">User ID: </p>
-        <p id="roles">Roles: </p>
+        
+        <div class="roles" id="roles">
+            <!-- Roles will be inserted here -->
+        </div>
+
         <div class="badge-container" id="badges">
             <!-- Badges will be inserted here -->
         </div>
@@ -67,7 +83,20 @@
         document.getElementById('avatar').src = avatar;
         document.getElementById('username').textContent = username;
         document.getElementById('userid').textContent = `User ID: ${userId}`;
-        document.getElementById('roles').textContent = `Roles: ${roles || 'No roles'}`;
+        
+        // Display roles
+        const rolesContainer = document.getElementById('roles');
+        if (roles) {
+            const roleArray = roles.split(',');
+            roleArray.forEach(role => {
+                const roleElement = document.createElement('span');
+                roleElement.classList.add('role');
+                roleElement.textContent = role;
+                rolesContainer.appendChild(roleElement);
+            });
+        } else {
+            rolesContainer.textContent = "No roles";
+        }
 
         // Badge icons mapping
         const badgeIcons = {
